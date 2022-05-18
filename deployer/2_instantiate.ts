@@ -10,10 +10,7 @@ async function main() {
 
   console.log(account.address);
   console.log(
-    await Promise.all([
-      cfg.cosmwasm.getBalance(account.address, "uosmo"),
-      cfg.cosmwasm.getBalance(account.address, "uion"),
-    ])
+    await cfg.cosmwasm.getBalance(account.address, "upebble"),
   );
 
   const codes = require(join(__dirname, "1_upload")) as UploadResult;

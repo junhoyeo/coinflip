@@ -3,7 +3,7 @@ import { join } from "path";
 
 import Config from "./config";
 
-const CONTRACTS = ["osmosis_coinflip"];
+const CONTRACTS = ["osmosis_coinflip-aarch64"];
 
 async function main() {
   const cfg = await Config.new();
@@ -11,7 +11,7 @@ async function main() {
 
   console.log(account.address);
   console.log(
-    await cfg.cosmwasm.getBalance(account.address, "uosmo")
+    await cfg.cosmwasm.getBalance(account.address, "upebble")
   );
 
   // upload codes

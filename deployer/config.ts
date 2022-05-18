@@ -20,15 +20,15 @@ export default class Config {
 
   static new = async ({
     mnemonic = process.env.MNEMONIC || "",
-    endpoint = process.env.ENDPOINT || "https://testnet-rpc.osmosis.zone/",
-    gasPrice = GasPrice.fromString((process.env.GAS_PRICE = "0.015uosmo")),
+    endpoint = process.env.ENDPOINT || "https://rpc.cliffnet.cosmwasm.com",
+    gasPrice = GasPrice.fromString((process.env.GAS_PRICE = "0.015upebble")),
   }: ConfigOption = {}): Promise<Config> => {
     if (mnemonic === "") {
       throw Error("please setup mnemonic phrase ($MNEMONIC)");
     }
 
     const wallet = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
-      prefix: "osmo",
+      prefix: "wasm",
     });
     const cosmwasm = await SigningCosmWasmClient.connectWithSigner(
       endpoint,

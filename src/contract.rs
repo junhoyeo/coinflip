@@ -47,7 +47,7 @@ pub fn try_deposit(_deps: DepsMut, _env: Env, info: MessageInfo) -> Result<Respo
     let received: Uint128 = info
         .funds
         .iter()
-        .find(|c| c.denom == "uosmo")
+        .find(|c| c.denom == "upebble")
         .map(|c| Uint128::from(c.amount))
         .unwrap_or_else(Uint128::zero);
 
@@ -89,7 +89,7 @@ mod tests {
         let _res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
 
         // beneficiary can release it
-        let info = mock_info("anyone", &coins(2, "uosmo"));
+        let info = mock_info("anyone", &coins(2, "upebble"));
         let msg = ExecuteMsg::Deposit {};
         let _res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
