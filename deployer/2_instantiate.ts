@@ -24,7 +24,7 @@ async function main() {
       {
         name: "Osmosis Coinflip",
         description: "Flip your coins in Osmosis",
-        count: 0,
+        denom: 'upebble',
       },
       "Osmosis Coinflip Contract",
       "auto"

@@ -3,9 +3,13 @@
   "title": "State",
   "type": "object",
   "required": [
+    "denom",
     "owner"
   ],
   "properties": {
+    "denom": {
+      "type": "string"
+    },
     "owner": {
       "$ref": "#/definitions/Addr"
     }

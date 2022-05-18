@@ -18,17 +18,19 @@ pub fn instantiate(
     deps: DepsMut,
     _env: Env,
     info: MessageInfo,
-    _msg: InstantiateMsg,
+    msg: InstantiateMsg,
 ) -> Result<Response, ContractError> {
     let state = State {
         owner: info.sender.clone(),
+        denom: msg.denom,
     };
     set_contract_version(deps.storage, CONTRACT_NAME, CONTRACT_VERSION)?;
     STATE.save(deps.storage, &state)?;
 
     Ok(Response::new()
         .add_attribute("method", "instantiate")
-        .add_attribute("owner", info.sender))
+        .add_attribute("owner", info.sender)
+        .add_attribute("denom", state.denom))
 }
 
 #[cfg_attr(not(feature = "library"), entry_point)]
@@ -44,10 +46,12 @@ pub fn execute(
 }
 
 pub fn try_deposit(_deps: DepsMut, _env: Env, info: MessageInfo) -> Result<Response, ContractError> {
+    let state = STATE.load(_deps.storage)?;
+
     let received: Uint128 = info
         .funds
         .iter()
-        .find(|c| c.denom == "upebble")
+        .find(|c| c.denom == state.denom)
         .map(|c| Uint128::from(c.amount))
         .unwrap_or_else(Uint128::zero);
 
@@ -63,11 +67,15 @@ mod tests {
     use cosmwasm_std::testing::{mock_dependencies_with_balance, mock_env, mock_info};
     use cosmwasm_std::{coins};
 
+    const DENOM: &str = "upebble";
+
     #[test]
     fn proper_initialization() {
         let mut deps = mock_dependencies_with_balance(&coins(2, "token"));
 
-        let msg = InstantiateMsg { count: 17 };
+        let msg = InstantiateMsg {
+            denom: DENOM.to_string(),
+        };
         let info = mock_info("creator", &coins(1000, "earth"));
 
         // we can just call .unwrap() to assert this was a success
@@ -84,7 +92,9 @@ mod tests {
     fn deposit() {
         let mut deps = mock_dependencies_with_balance(&coins(2, "token"));
 
-        let msg = InstantiateMsg { count: 17 };
+        let msg = InstantiateMsg {
+            denom: DENOM.to_string(),
+        };
         let info = mock_info("creator", &coins(2, "token"));
         let _res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
 
