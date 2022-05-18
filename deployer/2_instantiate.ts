@@ -13,7 +13,8 @@ async function main() {
     await cfg.cosmwasm.getBalance(account.address, "upebble"),
   );
 
-  const codes = require(join(__dirname, "1_upload")) as UploadResult;
+  const codes = require(join(__dirname, "1_upload.json")) as UploadResult;
+  console.log(codes)
 
   // instantiate
   const { contractAddress: contractAddress, transactionHash } =
@@ -23,6 +24,7 @@ async function main() {
       {
         name: "Osmosis Coinflip",
         description: "Flip your coins in Osmosis",
+        count: 0,
       },
       "Osmosis Coinflip Contract",
       "auto"

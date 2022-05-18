@@ -24,7 +24,7 @@ async function main() {
       "auto"
     );
     console.log({ contract, codeId, transactionHash });
-    codes[contract] = codeId;
+    codes[contract.split('-')[0]] = codeId;
   }
 
   writeFileSync(
